@@ -15,6 +15,7 @@ import time
 import re
 import hmac
 import struct
+import subprocess
 
 WSKEY_MODE = 0
 # 0 = Default / 1 = Debug!
@@ -267,6 +268,7 @@ def check_ck(ck) -> bool:  # 方法 检查 Cookie有效性 使用变量传递 �
 
 # 返回值 bool jd_ck
 def getToken(wskey):  # 方法 获取 Wskey转换使用的 Token 由 JD_API 返回 这里传递 wskey
+    '''
     try:
         url = str(base64.b64decode(url_t).decode()) + 'api/genToken'  # 设置云端服务器地址 路由为 genToken
         header = {"User-Agent": ua}  # 设置 HTTP头
@@ -276,6 +278,11 @@ def getToken(wskey):  # 方法 获取 Wskey转换使用的 Token 由 JD_API 返�
         logger.debug(str(err))  # 调试日志输出
         # return False, wskey  # 返回 -> False[Bool], Wskey
         return False  # 返回 -> False[Bool], Wskey
+    '''
+    result = subprocess.check_output("node ./function/wskey.cjs",
+        stderr=subprocess.STDOUT,
+        shell=True).decode('utf-8')
+    params = json.loads(result)['form']
     headers = {
         'cookie': wskey,
         'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -286,9 +293,10 @@ def getToken(wskey):  # 方法 获取 Wskey转换使用的 Token 由 JD_API 返�
     url = 'https://api.m.jd.com/client.action'  # 设置 URL地址
     data = 'body=%7B%22to%22%3A%22https%253a%252f%252fplogin.m.jd.com%252fjd-mlogin%252fstatic%252fhtml%252fappjmp_blank.html%22%7D&'  # 设置 POST 载荷
     try:
-        res = requests.post(url=url, params=params, headers=headers, data=data, verify=False,
+        res = requests.post(url=url, params=params, headers=headers, verify=False,
                             timeout=10)  # HTTP请求 [POST] 超时 10秒
         res_json = json.loads(res.text)  # Json模块 取值
+        logger.info(str(res_json))
         tokenKey = res_json['tokenKey']  # 取出TokenKey
     except Exception as err:
         logger.info("JD_WSKEY接口抛出错误 尝试重试 更换IP")  # 标准日志输出

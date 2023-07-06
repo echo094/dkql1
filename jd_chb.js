@@ -50,7 +50,7 @@ if ($.isNode()) {
   bdy_0x59ffd2 = [$.getdata("CookieJD"), $.getdata("CookieJD2"), ...jsonfomat($.getdata("CookiesJD") || "[]").map(_0x3ef655 => _0x3ef655.cookie)].filter(_0x5efaf6 => !!_0x5efaf6);
 }
 bdy_0x59ffd2.length == 1 && bdy_0x173d65 && (bdy_0x46b13a = bdy_0x173d65);
-let bdy_0x5c0dc = ["0f511f52376243199261e5bf73c9e239@SZ0j0lYu9LdFR9JJJQH-w"],
+let bdy_0x5c0dc = [process.env.ADD_JD_CHB],
   bdy_0x561537 = [],
   bdy_0x360da3 = [],
   bdy_0x46b13a = "";
@@ -278,7 +278,7 @@ async function bdy_0x9f0014() {
       console.log("此ip已被限制，请过10分钟后再执行脚本\n");
       return;
     }
-    $.index == 1 && ($.shareUuid = $.actorUuid, $.helpId = $.helpIdnow, console.log("\n后面的号都会助力 -> " + $.shareUuid));
+    ($.shareUuid = $.actorUuid, $.helpId = $.helpIdnow, console.log(`\n后面的号都会助力 -> ${$.shareUuid}@${$.helpId}`));
     await $.wait(parseInt(Math.random() * 1000 + 500, 10));
   } catch (_0x5f30c5) {
     console.log(_0x5f30c5);
